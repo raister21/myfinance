@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:myfinance/core/presentation/pages/splash_screen.dart';
+import 'package:myfinance/route/router.dart';
+
+import 'config/app_config.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final RouteGenerator _routeGenerator = RouteGenerator();
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SplashScreen(),
+    return MaterialApp(
+      theme: AppConfig().themeData,
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: _routeGenerator.generateRoute,
+      home: const SplashScreen(),
     );
   }
 }
