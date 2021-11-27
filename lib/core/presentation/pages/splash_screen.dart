@@ -10,9 +10,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late final double screenHeight;
-  late final double screenWidth;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,26 +20,19 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  @override
-  void didChangeDependencies() {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
-    super.didChangeDependencies();
-  }
-
   Widget _splashScreenStructre() {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, InfoGraphicScreen.routeName);
       },
       child: Container(
-        height: screenHeight,
-        width: screenWidth,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(
-            left: screenWidth / 20,
-            right: screenWidth / 20,
-            top: screenHeight / 6,
-            bottom: screenHeight / 40),
+            left: MediaQuery.of(context).size.width / 20,
+            right: MediaQuery.of(context).size.width / 20,
+            top: MediaQuery.of(context).size.height / 6,
+            bottom: MediaQuery.of(context).size.height / 40),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/background.jpg'),

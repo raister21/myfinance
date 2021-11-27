@@ -14,16 +14,6 @@ class InfoGraphicScreen extends StatefulWidget {
 }
 
 class _InfoGraphicScreenState extends State<InfoGraphicScreen> {
-  late double screenHeight;
-  late double screenWidth;
-
-  @override
-  void didChangeDependencies() {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +38,8 @@ class _InfoGraphicScreenState extends State<InfoGraphicScreen> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    left: screenWidth / 20, top: screenHeight / 16),
+                    left: MediaQuery.of(context).size.width / 20,
+                    top: MediaQuery.of(context).size.height / 16),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Column(
@@ -84,14 +75,16 @@ class _InfoGraphicScreenState extends State<InfoGraphicScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: screenHeight / 16),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 16),
                 child: SvgPicture.asset("assets/images/infographicImage.svg"),
               ),
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      top: screenHeight / 12, right: screenWidth / 20),
+                      top: MediaQuery.of(context).size.height / 12,
+                      right: MediaQuery.of(context).size.width / 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -123,20 +116,6 @@ class _InfoGraphicScreenState extends State<InfoGraphicScreen> {
                               ),
                             ]),
                       )
-                      // Text(
-                      //   "Track every Income",
-                      //   style: TextStyle(
-                      //       color: Colors.white,
-                      //       fontSize: 24,
-                      //       fontWeight: FontWeight.w400),
-                      // ),
-                      // Text(
-                      //   "and Purchases",
-                      //   style: TextStyle(
-                      //       color: Colors.white,
-                      //       fontSize: 24,
-                      //       fontWeight: FontWeight.w400),
-                      // ),
                     ],
                   ),
                 ),
@@ -149,7 +128,8 @@ class _InfoGraphicScreenState extends State<InfoGraphicScreen> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      bottom: screenHeight / 36, left: screenWidth / 20),
+                      bottom: MediaQuery.of(context).size.height / 36,
+                      left: MediaQuery.of(context).size.width / 20),
                   child: const Text(
                     "Get started now",
                     style: TextStyle(
@@ -160,9 +140,11 @@ class _InfoGraphicScreenState extends State<InfoGraphicScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: screenHeight / 16),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height / 16),
                 child: InfographicButton(
-                    buttonWidth: screenWidth, buttonHeight: screenHeight / 16),
+                    buttonWidth: MediaQuery.of(context).size.width,
+                    buttonHeight: MediaQuery.of(context).size.height / 16),
               ),
             ],
           )
