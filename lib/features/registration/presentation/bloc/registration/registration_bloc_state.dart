@@ -5,6 +5,19 @@ enum AutomaticSavingOption {
   yes,
 }
 
+extension AutomaticSavingOptionExtension on AutomaticSavingOption {
+  String get name {
+    switch (this) {
+      case AutomaticSavingOption.never:
+        return 'Never';
+      case AutomaticSavingOption.yes:
+        return 'Yes';
+      default:
+        return "Never";
+    }
+  }
+}
+
 class RegistrationBlocState {
   final String? name;
   final double? initialSaving;
@@ -32,5 +45,13 @@ class RegistrationBlocState {
       salaryDate: salaryDate ?? this.salaryDate,
       monthlyIncome: monthlyIncome ?? this.monthlyIncome,
     );
+  }
+
+  void getStateDisplay() {
+    print("Name: ${this.name}");
+    print("InitialSaving: ${this.initialSaving}");
+    print("SavingOption: ${this.savingOption}");
+    print("SalaryDate: ${this.salaryDate}");
+    print("MonthlyIncome: ${this.monthlyIncome}");
   }
 }

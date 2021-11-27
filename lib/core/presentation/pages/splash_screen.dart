@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myfinance/features/registration/presentation/pages/infographic_page.dart';
+import 'package:flutter/services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -10,6 +11,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // Removes keyboard when splash
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

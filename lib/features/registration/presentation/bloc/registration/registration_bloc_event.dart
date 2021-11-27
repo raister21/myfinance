@@ -14,17 +14,20 @@ class ChangeInitialSaving extends RegistrationBlocEvent {
   ChangeInitialSaving({required this.initialSaving});
 }
 
+class ChangeAutomaticSaving extends RegistrationBlocEvent {
+  final AutomaticSavingOption savingOption;
 
+  ChangeAutomaticSaving({required this.savingOption});
+}
 
-// void _changeInitialSaving(ChangeName event, Emitter<RegistrationBlocState> emit) {
-//     emit(state.copyWith(name: event.name));
-//   }
-//   void _changeAutomaticSaving(ChangeName event, Emitter<RegistrationBlocState> emit) {
-//     emit(state.copyWith(name: event.name));
-//   }
-//   void _changePayDay(ChangeName event, Emitter<RegistrationBlocState> emit) {
-//     emit(state.copyWith(name: event.name));
-//   }
-//   void _changeMonthlyIncome(ChangeName event, Emitter<RegistrationBlocState> emit) {
-//     emit(state.copyWith(name: event.name));
-//   }
+class ChangePayDay extends RegistrationBlocEvent {
+  final DateTime salaryDate;
+
+  ChangePayDay({required this.salaryDate});
+}
+
+class ChangeMonthlyIncome extends RegistrationBlocEvent {
+  final double monthlyIncome;
+
+  ChangeMonthlyIncome({required this.monthlyIncome});
+}

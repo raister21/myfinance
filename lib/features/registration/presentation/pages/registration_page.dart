@@ -18,10 +18,10 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final bloc = RegistrationBlocBloc();
-
+  late final Bloc _bloc;
   @override
   void initState() {
+    _bloc = BlocProvider.of<RegistrationBlocBloc>(context);
     super.initState();
   }
 
@@ -29,119 +29,166 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF7E56B3),
-      body: SafeArea(
-        child: _registrationStructre(),
-      ),
+      body: _registrationStructre(),
     );
   }
 
   Widget _registrationStructre() {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.fill),
-      ),
-      child: Column(children: [
-        SvgPicture.asset('assets/icons/Logo.svg'),
-        Expanded(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 20,
-                vertical: MediaQuery.of(context).size.height / 30),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
+    return SingleChildScrollView(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.fill),
+        ),
+        child: SafeArea(
+          child: Column(children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height / 30),
+              child: SvgPicture.asset(
+                'assets/icons/Logo.svg',
+                width: MediaQuery.of(context).size.width / 2.5,
               ),
             ),
-            child: Column(
-              children: [
-                const Text(
-                  "Register",
-                  style: TextStyle(
-                      color: darkGrey,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 20,
+                    vertical: MediaQuery.of(context).size.height / 30),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 30),
+                child: Column(
+                  children: [
+                    const Text(
+                      "Register",
+                      style: TextStyle(
+                          color: darkGrey,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 30),
+                    ),
+                    InputField(
+                      widgetWidth: MediaQuery.of(context).size.width,
+                      header: "Name",
+                      changeState: (value) {
+                        _bloc.add(
+                          ChangeName(name: value),
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 60),
+                    ),
+                    InputField(
+                      widgetWidth: MediaQuery.of(context).size.width,
+                      header: "Initial Saving",
+                      keyboardType: TextInputType.number,
+                      changeState: (value) {
+                        try {
+                          double change = double.parse(value);
+
+                          _bloc.add(
+                            ChangeInitialSaving(initialSaving: change),
+                          );
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 60),
+                    ),
+                    InputField(
+                      widgetWidth: MediaQuery.of(context).size.width,
+                      header: "Monthly Income",
+                      keyboardType: TextInputType.number,
+                      changeState: (value) {
+                        try {
+                          double monthly = double.parse(value);
+
+                          _bloc.add(
+                            ChangeMonthlyIncome(monthlyIncome: monthly),
+                          );
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 60),
+                    ),
+                    BlocBuilder<RegistrationBlocBloc, RegistrationBlocState>(
+                      builder: (context, state) {
+                        return InputFieldOnTap(
+                          widgetWidth: MediaQuery.of(context).size.width,
+                          header: "Automatic Add Salary",
+                          icon: SvgPicture.asset(
+                              "assets/icons/navigationArrow.svg"),
+                          onClickEvent: () {
+                            if (state.monthlyIncome != null) {}
+                          },
+                          displayName: state.monthlyIncome == null
+                              ? 'Never'
+                              : (state.savingOption as AutomaticSavingOption)
+                                  .name,
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 60),
+                    ),
+                    BlocBuilder<RegistrationBlocBloc, RegistrationBlocState>(
+                      builder: (context, state) {
+                        return InputFieldOnTap(
+                          widgetWidth: MediaQuery.of(context).size.width,
+                          header: "Pay day",
+                          onClickEvent: () {
+                            if (state.monthlyIncome != null) {
+                              // TODO : Change depending on automatic salary
+                            }
+                          },
+                          displayName: state.monthlyIncome == null
+                              ? 'Not applicable'
+                              : state.salaryDate != null
+                                  ? state.salaryDate.toString()
+                                  : "Not applicable",
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 60),
+                    ),
+                    CustomButton(
+                        widgetWidth: MediaQuery.of(context).size.width,
+                        widgetHeight: MediaQuery.of(context).size.height,
+                        buttonName: "Done",
+                        onClickEvent: () {
+                          print(_bloc.state.name);
+                        }),
+                  ],
                 ),
-                InputField(
-                  widgetWidth: MediaQuery.of(context).size.width,
-                  header: "Name",
-                  changeState: (value) {
-                    bloc.add(
-                      ChangeName(name: value),
-                    );
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 60),
-                ),
-                InputField(
-                  widgetWidth: MediaQuery.of(context).size.width,
-                  header: "Initial Saving",
-                  changeState: (value) {
-                    bloc.add(
-                      ChangeName(name: value),
-                    );
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 60),
-                ),
-                InputFieldOnTap(
-                  widgetWidth: MediaQuery.of(context).size.width,
-                  header: "Automatic Add Salary",
-                  icon: SvgPicture.asset("assets/icons/navigationArrow.svg"),
-                  onClickEvent: () {},
-                  displayName: 'Never',
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 60),
-                ),
-                InputFieldOnTap(
-                  widgetWidth: MediaQuery.of(context).size.width,
-                  header: "Pay day",
-                  onClickEvent: () {},
-                  // TODO : Change depending on automatic salary
-                  displayName: 'Not applicable',
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 60),
-                ),
-                InputField(
-                  widgetWidth: MediaQuery.of(context).size.width,
-                  header: "Monthly Income",
-                  keyboardType: const TextInputType.numberWithOptions(),
-                  changeState: (value) {},
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 60),
-                ),
-                CustomButton(
-                    widgetWidth: MediaQuery.of(context).size.width,
-                    widgetHeight: MediaQuery.of(context).size.height,
-                    buttonName: "Done",
-                    onClickEvent: () {
-                      print(bloc.state.name);
-                    }),
-              ],
-            ),
-          ),
-        )
-      ]),
+              ),
+            )
+          ]),
+        ),
+      ),
     );
   }
 }
