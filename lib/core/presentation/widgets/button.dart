@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:myfinance/config/app_config.dart';
+import 'package:myfinance/core/config/app_config.dart';
 
 class CustomButton extends StatelessWidget {
   final Function onClickEvent;

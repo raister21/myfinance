@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myfinance/config/app_config.dart';
+import 'package:myfinance/core/config/app_config.dart';
+
 import 'package:myfinance/features/registration/presentation/pages/registration_page.dart';
 
 class InfographicButton extends StatelessWidget {

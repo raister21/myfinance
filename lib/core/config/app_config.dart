@@ -5,8 +5,25 @@ class AppConfig {
       fontFamily: "Roboto",
       textTheme: const TextTheme(bodyText1: TextStyle(color: Colors.white)),
       elevatedButtonTheme: const ElevatedButtonThemeData(style: ButtonStyle()),
+      primarySwatch: primarySwatch,
       primaryColor: primary);
 }
+
+const primarySwatch = MaterialColor(
+  0xFF6847A8,
+  {
+    50: Color(0xFF0a0711),
+    100: Color(0xFF150e22),
+    200: Color(0xFF2a1c43),
+    300: Color(0xFF3e2b65),
+    400: Color(0xFF533986),
+    500: Color(0xFF6847a8),
+    600: Color(0xFF866cb9),
+    700: Color(0xFFa491cb),
+    800: Color(0xFFc3b5dc),
+    900: Color(0xFFe1daee),
+  },
+);
 
 const Color primary = Color(0xFF6847A8);
 const Color primaryLight = Color(0xFFCB50F4);

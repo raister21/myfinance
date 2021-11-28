@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:myfinance/config/app_config.dart';
+import 'package:myfinance/core/config/app_config.dart';
 
 class InputFieldOnTap extends StatefulWidget {
   final double widgetWidth;
@@ -56,17 +56,22 @@ class _InputFieldOnTapState extends State<InputFieldOnTap> {
     );
   }
 
-  Container baseInputField() {
-    return Container(
-      width: widget.widgetWidth,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-      decoration: BoxDecoration(
-        color: lighterGrey,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        widget.displayName,
-        style: const TextStyle(fontSize: 14),
+  Widget baseInputField() {
+    return InkWell(
+      onTap: () {
+        widget.onClickEvent();
+      },
+      child: Container(
+        width: widget.widgetWidth,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+        decoration: BoxDecoration(
+          color: lighterGrey,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          widget.displayName,
+          style: const TextStyle(fontSize: 14),
+        ),
       ),
     );
   }

@@ -9,8 +9,8 @@ part 'registration_bloc_state.dart';
 class RegistrationBlocBloc
     extends Bloc<RegistrationBlocEvent, RegistrationBlocState> {
   RegistrationBlocBloc()
-      : super(
-            RegistrationBlocState(savingOption: AutomaticSavingOption.never)) {
+      : super(RegistrationBlocState(
+            initialSaving: 0, savingOption: AutomaticSavingOption.never)) {
     on<ChangeName>((event, emit) {
       _changeName(event, emit);
     });

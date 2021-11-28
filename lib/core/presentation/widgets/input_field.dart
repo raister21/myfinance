@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:myfinance/config/app_config.dart';
-import 'package:myfinance/config/validator.dart';
+
+import 'package:myfinance/core/config/app_config.dart';
 
 class InputField extends StatefulWidget {
   const InputField(

@@ -5,7 +5,7 @@ import 'package:myfinance/features/registration/presentation/bloc/registration/r
 import 'package:myfinance/route/router.dart';
 import 'package:myfinance/services/bloc_observer.dart';
 
-import 'config/app_config.dart';
+import 'core/config/app_config.dart';
 
 void main() {
   BlocOverrides.runZoned(

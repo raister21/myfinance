@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:myfinance/config/app_config.dart';
+import 'package:myfinance/core/config/app_config.dart';
+import 'package:myfinance/core/presentation/pages/main_screen.dart';
+
 import 'package:myfinance/core/presentation/widgets/button.dart';
 import 'package:myfinance/core/presentation/widgets/input_field.dart';
 
 import 'package:myfinance/core/presentation/widgets/input_field_on_tap.dart';
+import 'package:myfinance/core/utils/date_time_util.dart';
 import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
+import 'package:myfinance/core/presentation/widgets/drop_down.dart';
 import 'package:myfinance/services/bloc_observer.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -19,6 +23,9 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   late final Bloc _bloc;
+
+  // TODO: INPUT VALIDATION
+
   @override
   void initState() {
     _bloc = BlocProvider.of<RegistrationBlocBloc>(context);
@@ -134,19 +141,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     BlocBuilder<RegistrationBlocBloc, RegistrationBlocState>(
                       builder: (context, state) {
-                        return InputFieldOnTap(
-                          widgetWidth: MediaQuery.of(context).size.width,
-                          header: "Automatic Add Salary",
-                          icon: SvgPicture.asset(
-                              "assets/icons/navigationArrow.svg"),
-                          onClickEvent: () {
-                            if (state.monthlyIncome != null) {}
-                          },
-                          displayName: state.monthlyIncome == null
-                              ? 'Never'
-                              : (state.savingOption as AutomaticSavingOption)
-                                  .name,
-                        );
+                        return DropDown(
+                            header: "Automatic Add Salary",
+                            items: AutomaticSavingOption.values,
+                            widgetWidth: MediaQuery.of(context).size.width,
+                            displayText: state.monthlyIncome == null
+                                ? 'Never'
+                                : (state.savingOption as AutomaticSavingOption)
+                                    .name,
+                            disabled: state.monthlyIncome == null,
+                            callBack: (value) {
+                              if (value.runtimeType == AutomaticSavingOption) {
+                                _bloc.add(
+                                  ChangeAutomaticSaving(savingOption: value),
+                                );
+                              }
+                            });
                       },
                     ),
                     Padding(
@@ -158,15 +168,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         return InputFieldOnTap(
                           widgetWidth: MediaQuery.of(context).size.width,
                           header: "Pay day",
-                          onClickEvent: () {
+                          onClickEvent: () async {
                             if (state.monthlyIncome != null) {
-                              // TODO : Change depending on automatic salary
+                              DateTime pickedDate =
+                                  await DateTimeUtil().pickDate(context);
+                              _bloc.add(
+                                ChangePayDay(salaryDate: pickedDate),
+                              );
                             }
                           },
                           displayName: state.monthlyIncome == null
                               ? 'Not applicable'
                               : state.salaryDate != null
-                                  ? state.salaryDate.toString()
+                                  ? state.salaryDate!.day.toString()
                                   : "Not applicable",
                         );
                       },
@@ -180,7 +194,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         widgetHeight: MediaQuery.of(context).size.height,
                         buttonName: "Done",
                         onClickEvent: () {
-                          print(_bloc.state.name);
+                          // BLOC state pass to database
+                          Navigator.pushNamed(context, MainScreen.routeName);
                         }),
                   ],
                 ),
