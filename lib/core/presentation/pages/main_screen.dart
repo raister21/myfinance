@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myfinance/core/presentation/bloc/cubit/bottomnavigation_cubit.dart';
 import 'package:myfinance/core/presentation/widgets/bottom_navigation.dart';
+import 'package:myfinance/features/viewFinance/presentation/pages/home_page.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = "/mainScreen";
@@ -15,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   late final BottomnavigationCubit _bloc;
 
   List<Widget> pages = const [
-    Text("hey"),
+    HomePage(),
     Text("you"),
     Text("moda"),
     Text("fada")
