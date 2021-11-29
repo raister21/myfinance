@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:myfinance/core/presentation/bloc/cubit/bottomnavigation_cubit.dart';
 import 'package:myfinance/core/presentation/pages/main_screen.dart';
 import 'package:myfinance/core/presentation/pages/splash_screen.dart';
 import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:myfinance/features/registration/presentation/pages/registration_
 
 class RouteGenerator {
   // final RegistrationBlocBloc _registerBloc = RegistrationBlocBloc();
+  final BottomnavigationCubit _navBloc = BottomnavigationCubit();
 
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -26,7 +28,10 @@ class RouteGenerator {
 
       case (MainScreen.routeName):
         return MaterialPageRoute(
-          builder: (_) => const MainScreen(),
+          builder: (_) => BlocProvider.value(
+            value: _navBloc,
+            child: const MainScreen(),
+          ),
         );
 
       default:
