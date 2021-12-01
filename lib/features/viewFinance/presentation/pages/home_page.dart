@@ -26,10 +26,11 @@ class _HomePageState extends State<HomePage> {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.fromLTRB(
-            MediaQuery.of(context).size.width / 20,
-            MediaQuery.of(context).size.height / 40,
-            MediaQuery.of(context).size.width / 20,
-            0),
+          MediaQuery.of(context).size.width / 20,
+          MediaQuery.of(context).size.height / 40,
+          MediaQuery.of(context).size.width / 20,
+          0,
+        ),
         child: Column(
           children: [
             const HomeHeaderBlock(),

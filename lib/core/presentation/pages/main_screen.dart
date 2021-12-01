@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myfinance/core/presentation/bloc/cubit/bottomnavigation_cubit.dart';
 import 'package:myfinance/core/presentation/widgets/bottom_navigation.dart';
+import 'package:myfinance/features/trackFinance/presentation/pages/input_page.dart';
 import 'package:myfinance/features/viewFinance/presentation/pages/home_page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> pages = const [
     HomePage(),
-    Text("you"),
+    InputPage(),
     Text("moda"),
     Text("fada")
   ];

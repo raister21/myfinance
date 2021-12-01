@@ -12,4 +12,11 @@ class DateTimeUtil {
 
     return pickDate!;
   }
+
+  String getHourMinuteString(DateTime dateTime) {
+    int hour = dateTime.hour == 0 ? 12 : dateTime.hour;
+    int minute = dateTime.minute;
+    String suffix = dateTime.hour >= 12 ? "Pm" : "Am";
+    return "${hour.toString()} : ${minute.toString().padRight(2, '0')} $suffix";
+  }
 }

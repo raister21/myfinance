@@ -28,7 +28,7 @@ class _HomeIndividualCircularIndicatorState
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(14, 14, 14, 0.25),
+        color: transBlack,
         borderRadius: BorderRadius.circular(20),
       ),
       padding: EdgeInsets.symmetric(
