@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AppConfig {
   ThemeData themeData = ThemeData(
@@ -7,6 +8,11 @@ class AppConfig {
       elevatedButtonTheme: const ElevatedButtonThemeData(style: ButtonStyle()),
       primarySwatch: primarySwatch,
       primaryColor: primary);
+
+  NumberFormat numberFormat =
+      NumberFormat.currency(customPattern: '##,##,###', decimalDigits: 0);
+  // NumberFormat standardCurrency =
+  //     NumberFormat.currency(customPattern: '##,##,###.#');
 }
 
 const primarySwatch = MaterialColor(

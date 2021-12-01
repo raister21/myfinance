@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myfinance/core/config/app_config.dart';
 import 'package:myfinance/core/utils/date_time_util.dart';
 
-class InputItem extends StatelessWidget {
+class InputItem extends StatefulWidget {
   final double widthPadding;
   final double heightPadding;
   final String? imagePath;
@@ -24,25 +24,30 @@ class InputItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<InputItem> createState() => _InputItemState();
+}
+
+class _InputItemState extends State<InputItem> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: widthPadding,
-        vertical: heightPadding,
+        horizontal: widget.widthPadding,
+        vertical: widget.heightPadding,
       ),
       child: Row(
         children: [
           Flexible(
             flex: 4,
             child: CircleAvatar(
-              minRadius: widthPadding * 1.5,
-              maxRadius: widthPadding * 2,
+              minRadius: widget.widthPadding * 1.5,
+              maxRadius: widget.widthPadding * 2,
               backgroundColor: darkGrey,
-              backgroundImage: AssetImage(imagePath!),
+              backgroundImage: AssetImage(widget.imagePath!),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: widthPadding),
+            padding: EdgeInsets.only(right: widget.widthPadding),
           ),
           Flexible(
             flex: 8,
@@ -50,16 +55,16 @@ class InputItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  itemName,
+                  widget.itemName,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 18,
                     color: Colors.white,
                   ),
                 ),
-                location != null
+                widget.location != null
                     ? Text(
-                        location!,
+                        widget.location!,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 12,
@@ -70,7 +75,7 @@ class InputItem extends StatelessWidget {
                       )
                     : Container(),
                 Text(
-                  DateTimeUtil().getHourMinuteString(timeOfTranscation),
+                  DateTimeUtil().getHourMinuteString(widget.timeOfTranscation),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 12,
@@ -85,11 +90,11 @@ class InputItem extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Text(
-              "${transactionAmount.toInt().toString()} Rps",
+              "${AppConfig().numberFormat.format(widget.transactionAmount)} Rps",
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: 20,
-                color: transactionType ? red : green,
+                color: widget.transactionType ? red : green,
                 fontWeight: FontWeight.bold,
               ),
             ),

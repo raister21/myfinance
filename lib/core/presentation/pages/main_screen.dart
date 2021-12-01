@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myfinance/core/presentation/bloc/cubit/bottomnavigation_cubit.dart';
 import 'package:myfinance/core/presentation/widgets/bottom_navigation.dart';
+import 'package:myfinance/features/trackFinance/presentation/bloc/inputCubit/inputoverlay_cubit.dart';
 import 'package:myfinance/features/trackFinance/presentation/pages/input_page.dart';
 import 'package:myfinance/features/viewFinance/presentation/pages/home_page.dart';
 
@@ -15,17 +16,24 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late final BottomnavigationCubit _bloc;
+  late final Widget _inputPage;
 
-  List<Widget> pages = const [
-    HomePage(),
-    InputPage(),
-    Text("moda"),
-    Text("fada")
-  ];
+  late List<Widget> pages = [];
 
   @override
   void initState() {
     _bloc = BlocProvider.of<BottomnavigationCubit>(context);
+
+    _inputPage = BlocProvider(
+      create: (context) => InputoverlayCubit(),
+      child: const InputPage(),
+    );
+    pages = [
+      const HomePage(),
+      _inputPage,
+      const Text("moda"),
+      const Text("fada")
+    ];
     super.initState();
   }
 

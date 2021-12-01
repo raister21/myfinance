@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:myfinance/core/config/app_config.dart';
 
 class InputActionBlock extends StatefulWidget {
-  final Function inputCallBack;
-  final Function outputCallBack;
+  final Function() inputCallBack;
+  final Function() outputCallBack;
   const InputActionBlock(
       {Key? key, required this.inputCallBack, required this.outputCallBack})
       : super(key: key);
@@ -22,6 +22,7 @@ class _InputActionBlockState extends State<InputActionBlock> {
         Expanded(
           child: InkWell(
             onTap: () {
+              print("tapped in");
               widget.inputCallBack();
             },
             child: Container(
