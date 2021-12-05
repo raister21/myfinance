@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myfinance/core/config/app_config.dart';
+import 'package:myfinance/core/presentation/widgets/button.dart';
+import 'package:myfinance/core/presentation/widgets/input_field.dart';
 import 'package:myfinance/features/trackFinance/presentation/bloc/inputCubit/inputoverlay_cubit.dart';
 import 'package:myfinance/features/trackFinance/presentation/widgets/input_action_block.dart';
 import 'package:myfinance/features/trackFinance/presentation/widgets/input_body_block.dart';
-import 'package:myfinance/features/trackFinance/presentation/widgets/input_input_overlay.dart';
+import 'package:myfinance/features/trackFinance/presentation/widgets/input_overlay.dart';
 
 class InputPage extends StatefulWidget {
   const InputPage({Key? key}) : super(key: key);
@@ -15,27 +17,19 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   late final InputoverlayCubit _cubit;
+  // late OverlayEntry _inputOverlay;
 
   @override
   void initState() {
     // TODO: implement initState
     _cubit = BlocProvider.of<InputoverlayCubit>(context);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InputoverlayCubit, InputoverlayState>(
-      listener: (context, state) {
-        if (state is IntputOverlayInflated) {
-          Overlay.of(context)!.insert(state.overlayEntry);
-        } else if (state is InputOverlayClose) {
-          state.overlayEntry.remove();
-          _cubit.cleanOverlay();
-        }
-      },
-      child: _inputPageStructure(),
-    );
+    return _inputPageStructure();
   }
 
   Widget _inputPageStructure() {
@@ -76,7 +70,11 @@ class _InputPageState extends State<InputPage> {
               vertical: 2,
             ),
           ),
-          const Expanded(child: InputBodyBlock()),
+          Expanded(
+            child: InputBodyBlock(
+              cubit: _cubit,
+            ),
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(
               vertical: 2,
@@ -103,15 +101,20 @@ class _InputPageState extends State<InputPage> {
                 inputCallBack: () {
                   _cubit.infalteOverlay(
                     overlay: inputOverlay(
-                      overlayWidth: MediaQuery.of(context).size.width * 0.8,
-                      overlayHeight: MediaQuery.of(context).size.height / 2,
+                      widgetHeight: MediaQuery.of(context).size.height,
+                      widgetWidth: MediaQuery.of(context).size.width,
+                      cubit: _cubit,
                     ),
                   );
                 },
                 outputCallBack: () {
-                  if (state is IntputOverlayInflated) {
-                    _cubit.defalteOverlay(overlay: state.overlayEntry);
-                  }
+                  _cubit.infalteOverlay(
+                    overlay: expenditureOverlay(
+                      widgetHeight: MediaQuery.of(context).size.height,
+                      widgetWidth: MediaQuery.of(context).size.width,
+                      cubit: _cubit,
+                    ),
+                  );
                 },
               );
             },

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myfinance/core/config/app_config.dart';
+import 'package:myfinance/core/presentation/widgets/core_overlay.dart';
+import 'package:myfinance/features/trackFinance/presentation/bloc/inputCubit/inputoverlay_cubit.dart';
 import 'package:myfinance/features/trackFinance/presentation/widgets/input_item.dart';
 
 class InputBodyBlock extends StatefulWidget {
-  const InputBodyBlock({Key? key}) : super(key: key);
+  final InputoverlayCubit cubit;
+  const InputBodyBlock({Key? key, required this.cubit}) : super(key: key);
 
   @override
   State<InputBodyBlock> createState() => _InputBodyBlockState();
@@ -60,13 +63,24 @@ class _InputBodyBlockState extends State<InputBodyBlock> {
       child: ListView.builder(
           itemCount: dummyList.length,
           itemBuilder: (BuildContext context, int index) {
-            return InputItem(
-              heightPadding: MediaQuery.of(context).size.height / 40,
-              widthPadding: MediaQuery.of(context).size.width / 20,
-              itemName: dummyList[index]['itemName'],
-              timeOfTranscation: dummyList[index]['timeOfTransaction'],
-              transactionAmount: dummyList[index]['transactionAmount'],
-              transactionType: dummyList[index]['transactionType'],
+            return InkWell(
+              onTap: () {
+                widget.cubit.infalteOverlay(
+                  overlay: editOverlay(
+                    widgetHeight: MediaQuery.of(context).size.height,
+                    widgetWidth: MediaQuery.of(context).size.width,
+                    cubit: widget.cubit,
+                  ),
+                );
+              },
+              child: InputItem(
+                heightPadding: MediaQuery.of(context).size.height / 40,
+                widthPadding: MediaQuery.of(context).size.width / 20,
+                itemName: dummyList[index]['itemName'],
+                timeOfTranscation: dummyList[index]['timeOfTransaction'],
+                transactionAmount: dummyList[index]['transactionAmount'],
+                transactionType: dummyList[index]['transactionType'],
+              ),
             );
           }),
     );

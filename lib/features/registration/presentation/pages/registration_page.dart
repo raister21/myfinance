@@ -82,108 +82,123 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 30),
-                    ),
-                    InputField(
-                      widgetWidth: MediaQuery.of(context).size.width,
-                      header: "Name",
-                      changeState: (value) {
-                        _bloc.add(
-                          ChangeName(name: value),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 60),
-                    ),
-                    InputField(
-                      widgetWidth: MediaQuery.of(context).size.width,
-                      header: "Initial Saving",
-                      keyboardType: TextInputType.number,
-                      changeState: (value) {
-                        try {
-                          double change = double.parse(value);
-
-                          _bloc.add(
-                            ChangeInitialSaving(initialSaving: change),
-                          );
-                        } catch (e) {
-                          print(e);
-                        }
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 60),
-                    ),
-                    InputField(
-                      widgetWidth: MediaQuery.of(context).size.width,
-                      header: "Monthly Income",
-                      keyboardType: TextInputType.number,
-                      changeState: (value) {
-                        try {
-                          double monthly = double.parse(value);
-
-                          _bloc.add(
-                            ChangeMonthlyIncome(monthlyIncome: monthly),
-                          );
-                        } catch (e) {
-                          print(e);
-                        }
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 60),
-                    ),
-                    BlocBuilder<RegistrationBlocBloc, RegistrationBlocState>(
-                      builder: (context, state) {
-                        return DropDown(
-                            header: "Automatic Add Salary",
-                            items: AutomaticSavingOption.values,
-                            widgetWidth: MediaQuery.of(context).size.width,
-                            displayText: state.monthlyIncome == null
-                                ? 'Never'
-                                : (state.savingOption as AutomaticSavingOption)
-                                    .name,
-                            disabled: state.monthlyIncome == null,
-                            callBack: (value) {
-                              if (value.runtimeType == AutomaticSavingOption) {
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height / 30),
+                            ),
+                            InputField(
+                              widgetWidth: MediaQuery.of(context).size.width,
+                              header: "Name",
+                              changeState: (value) {
                                 _bloc.add(
-                                  ChangeAutomaticSaving(savingOption: value),
+                                  ChangeName(name: value),
                                 );
-                              }
-                            });
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 60),
-                    ),
-                    BlocBuilder<RegistrationBlocBloc, RegistrationBlocState>(
-                      builder: (context, state) {
-                        return InputFieldOnTap(
-                          widgetWidth: MediaQuery.of(context).size.width,
-                          header: "Pay day",
-                          onClickEvent: () async {
-                            if (state.monthlyIncome != null) {
-                              DateTime pickedDate =
-                                  await DateTimeUtil().pickDate(context);
-                              _bloc.add(
-                                ChangePayDay(salaryDate: pickedDate),
-                              );
-                            }
-                          },
-                          displayName: state.monthlyIncome == null
-                              ? 'Not applicable'
-                              : state.salaryDate != null
-                                  ? state.salaryDate!.day.toString()
-                                  : "Not applicable",
-                        );
-                      },
+                              },
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height / 60),
+                            ),
+                            InputField(
+                              widgetWidth: MediaQuery.of(context).size.width,
+                              header: "Initial Saving",
+                              keyboardType: TextInputType.number,
+                              changeState: (value) {
+                                try {
+                                  double change = double.parse(value);
+
+                                  _bloc.add(
+                                    ChangeInitialSaving(initialSaving: change),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height / 60),
+                            ),
+                            InputField(
+                              widgetWidth: MediaQuery.of(context).size.width,
+                              header: "Monthly Income",
+                              keyboardType: TextInputType.number,
+                              changeState: (value) {
+                                try {
+                                  double monthly = double.parse(value);
+
+                                  _bloc.add(
+                                    ChangeMonthlyIncome(monthlyIncome: monthly),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height / 60),
+                            ),
+                            BlocBuilder<RegistrationBlocBloc,
+                                RegistrationBlocState>(
+                              builder: (context, state) {
+                                return DropDown(
+                                    header: "Automatic Add Salary",
+                                    items: AutomaticSavingOption.values,
+                                    widgetWidth:
+                                        MediaQuery.of(context).size.width,
+                                    displayText: state.monthlyIncome == null
+                                        ? 'Never'
+                                        : (state.savingOption
+                                                as AutomaticSavingOption)
+                                            .name,
+                                    disabled: state.monthlyIncome == null,
+                                    callBack: (value) {
+                                      if (value.runtimeType ==
+                                          AutomaticSavingOption) {
+                                        _bloc.add(
+                                          ChangeAutomaticSaving(
+                                              savingOption: value),
+                                        );
+                                      }
+                                    });
+                              },
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height / 60),
+                            ),
+                            BlocBuilder<RegistrationBlocBloc,
+                                RegistrationBlocState>(
+                              builder: (context, state) {
+                                return InputFieldOnTap(
+                                  widgetWidth:
+                                      MediaQuery.of(context).size.width,
+                                  header: "Pay day",
+                                  onClickEvent: () async {
+                                    if (state.monthlyIncome != null) {
+                                      DateTime pickedDate = await DateTimeUtil()
+                                          .pickDate(context);
+                                      _bloc.add(
+                                        ChangePayDay(salaryDate: pickedDate),
+                                      );
+                                    }
+                                  },
+                                  displayName: state.monthlyIncome == null
+                                      ? 'Not applicable'
+                                      : state.salaryDate != null
+                                          ? state.salaryDate!.day.toString()
+                                          : "Not applicable",
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(

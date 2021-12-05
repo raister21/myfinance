@@ -6,10 +6,12 @@ import 'package:myfinance/core/presentation/pages/splash_screen.dart';
 import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
 import 'package:myfinance/features/registration/presentation/pages/infographic_page.dart';
 import 'package:myfinance/features/registration/presentation/pages/registration_page.dart';
+import 'package:myfinance/features/trackFinance/presentation/bloc/inputCubit/inputoverlay_cubit.dart';
 
 class RouteGenerator {
   // final RegistrationBlocBloc _registerBloc = RegistrationBlocBloc();
   final BottomnavigationCubit _navBloc = BottomnavigationCubit();
+  final InputoverlayCubit _inputoverlayCubit = InputoverlayCubit();
 
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -28,8 +30,15 @@ class RouteGenerator {
 
       case (MainScreen.routeName):
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: _navBloc,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _navBloc,
+              ),
+              BlocProvider.value(
+                value: _inputoverlayCubit,
+              ),
+            ],
             child: const MainScreen(),
           ),
         );

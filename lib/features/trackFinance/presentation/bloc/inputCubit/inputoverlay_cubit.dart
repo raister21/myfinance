@@ -13,6 +13,11 @@ class InputoverlayCubit extends Cubit<InputoverlayState> {
   void defalteOverlay({required OverlayEntry overlay}) =>
       emit(InputOverlayClose(overlayEntry: overlay));
 
+  void deflateAllOverlay(IntputOverlayInflated state) {
+    state.overlayEntry.remove();
+    emit(InputoverlayInitial());
+  }
+
   void cleanOverlay() => emit(InputoverlayInitial());
 
   @override

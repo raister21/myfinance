@@ -16,6 +16,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late final BottomnavigationCubit _bloc;
+  late final InputoverlayCubit _inputCubit;
   late final Widget _inputPage;
 
   late List<Widget> pages = [];
@@ -23,9 +24,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     _bloc = BlocProvider.of<BottomnavigationCubit>(context);
+    _inputCubit = BlocProvider.of<InputoverlayCubit>(context);
 
-    _inputPage = BlocProvider(
-      create: (context) => InputoverlayCubit(),
+    _inputPage = BlocProvider.value(
+      value: _inputCubit,
       child: const InputPage(),
     );
     pages = [
@@ -41,7 +43,53 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF7E56B3),
-      body: _mainScreenStructre(),
+      body: BlocListener<InputoverlayCubit, InputoverlayState>(
+        listener: (context, state) {
+          if (state is IntputOverlayInflated) {
+            Overlay.of(context)!.insert(state.overlayEntry);
+          } else if (state is InputOverlayClose) {
+            state.overlayEntry.remove();
+            _inputCubit.cleanOverlay();
+          }
+        },
+        child: BlocBuilder<InputoverlayCubit, InputoverlayState>(
+          builder: (context, state) {
+            return WillPopScope(
+              onWillPop: () async {
+                if (state is IntputOverlayInflated) {
+                  state.overlayEntry.remove();
+                  _inputCubit.cleanOverlay();
+                  return false;
+                } else {
+                  return true;
+                }
+              },
+              child: Stack(
+                children: [
+                  _mainScreenStructre(),
+                  IgnorePointer(
+                    ignoring: state is! IntputOverlayInflated,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (state is IntputOverlayInflated) {
+                          state.overlayEntry.remove();
+                          _inputCubit.cleanOverlay();
+                        }
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        color: Color.fromRGBO(14, 14, 14,
+                            state is IntputOverlayInflated ? 0.7 : 0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 
