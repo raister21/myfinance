@@ -44,7 +44,7 @@ class GoalIndicatorBar extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-              color: Colors.blue,
+              color: blue,
               child: const Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -61,7 +61,7 @@ class GoalIndicatorBar extends StatelessWidget {
             flex: 1,
             child: Container(
               decoration: const BoxDecoration(
-                color: red,
+                color: green,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20),

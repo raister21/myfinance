@@ -21,7 +21,6 @@ class _InputPageState extends State<InputPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _cubit = BlocProvider.of<InputoverlayCubit>(context);
 
     super.initState();

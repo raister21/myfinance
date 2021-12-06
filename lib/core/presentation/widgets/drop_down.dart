@@ -58,8 +58,10 @@ class _DropDownState extends State<DropDown> {
                 style: const TextStyle(fontSize: 14, color: Colors.black),
               ),
               icon: Align(
-                  alignment: Alignment.centerRight,
-                  child: SvgPicture.asset("assets/icons/navigationArrow.svg")),
+                alignment: Alignment.centerRight,
+                child:
+                    SvgPicture.asset("assets/icons/navigationArrowRight.svg"),
+              ),
               items: getItems(list: widget.items),
               underline: Container(),
               onChanged: (value) {

@@ -40,3 +40,4 @@ const Color green = Color(0xFF51F54E);
 const Color red = Color(0xFFFF5858);
 const Color blue = Color(0xFF77DBFB);
 const Color transBlack = Color(0x400E0E0E);
+const Color transWhite = Color(0x40FFFFFF);

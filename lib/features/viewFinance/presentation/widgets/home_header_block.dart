@@ -26,7 +26,7 @@ class HomeHeaderBlock extends StatelessWidget {
                   ),
                 ),
                 const Text(
-                  "60,750 Rps",
+                  "2 Potatoes",
                   style: TextStyle(
                     height: 1.5,
                     fontSize: 34,
@@ -56,7 +56,7 @@ class HomeHeaderBlock extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "20,000 Rps",
+                          "25 km/h",
                           style: TextStyle(
                             height: 1.5,
                             fontSize: 14,
@@ -86,7 +86,7 @@ class HomeHeaderBlock extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "5,700 Rps",
+                          "y r u ronin5",
                           style: TextStyle(
                             height: 1.5,
                             fontSize: 14,
