@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myfinance/features/setting/presentation/widgets/setting_goal_block.dart';
 import 'package:myfinance/features/setting/presentation/widgets/setting_profile_block.dart';
+import 'package:myfinance/features/setting/presentation/widgets/setting_system_block.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -34,10 +36,33 @@ class _SettingPageState extends State<SettingPage> {
                 fontWeight: FontWeight.normal,
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height / 40,
+              ),
+            ),
             SettingProfileBlock(
               widgetHeight: MediaQuery.of(context).size.height,
               widgetWidth: MediaQuery.of(context).size.width,
-            )
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height / 40,
+              ),
+            ),
+            SettingGoalBlock(
+              widgetHeight: MediaQuery.of(context).size.height,
+              widgetWidth: MediaQuery.of(context).size.width,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height / 40,
+              ),
+            ),
+            SettingSystemBlock(
+              widgetHeight: MediaQuery.of(context).size.height,
+              widgetWidth: MediaQuery.of(context).size.width,
+            ),
           ],
         ),
       ),
