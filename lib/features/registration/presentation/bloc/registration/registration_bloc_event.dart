@@ -31,3 +31,10 @@ class ChangeMonthlyIncome extends RegistrationBlocEvent {
 
   ChangeMonthlyIncome({required this.monthlyIncome});
 }
+
+class SaveRegistration extends RegistrationBlocEvent {
+  final RegistrationBlocState state;
+  final SetProfileInformation setProfileInformation;
+
+  SaveRegistration({required this.state, required this.setProfileInformation});
+}

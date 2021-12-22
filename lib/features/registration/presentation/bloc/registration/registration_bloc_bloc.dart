@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:myfinance/features/registration/data/repositories/profile_repository_imp.dart';
+import 'package:myfinance/features/registration/domain/repositories/profile_repository.dart';
+import 'package:myfinance/features/registration/domain/usecases/set_profile_information.dart';
 
 part 'registration_bloc_event.dart';
 part 'registration_bloc_state.dart';
@@ -26,6 +29,7 @@ class RegistrationBlocBloc
     on<ChangeMonthlyIncome>((event, emit) {
       _changeMonthlyIncome(event, emit);
     });
+    on<SaveRegistration>((event, emit) {});
   }
 
   @override
@@ -65,5 +69,9 @@ class RegistrationBlocBloc
   void _changeMonthlyIncome(
       ChangeMonthlyIncome event, Emitter<RegistrationBlocState> emit) {
     emit(state.copyWith(monthlyIncome: event.monthlyIncome));
+  }
+
+  void _saveRegistration(SaveRegistration event, Emitter<RegistrationBlocState> emit) {
+
   }
 }

@@ -9,6 +9,9 @@ import 'package:myfinance/core/presentation/widgets/input_field.dart';
 
 import 'package:myfinance/core/presentation/widgets/input_field_on_tap.dart';
 import 'package:myfinance/core/utils/date_time_util.dart';
+import 'package:myfinance/features/registration/data/datasources/profile_datasource_local.dart';
+import 'package:myfinance/features/registration/data/repositories/profile_repository_imp.dart';
+import 'package:myfinance/features/registration/domain/usecases/set_profile_information.dart';
 import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
 import 'package:myfinance/core/presentation/widgets/drop_down.dart';
 import 'package:myfinance/services/bloc_observer.dart';
@@ -210,7 +213,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         buttonName: "Done",
                         onClickEvent: () {
                           // BLOC state pass to database
-                          Navigator.pushNamed(context, MainScreen.routeName);
+                          if (_bloc.state.name != null) {
+                            _bloc.add(
+                              SaveRegistration(
+                                state: _bloc.state,
+                                setProfileInformation: SetProfileInformation(
+                                    profileRepository: ProfileRepositoryImpl(
+                                        profileDataSourceLocal:
+                                            ProfileDataSourceLocalImpl())),
+                              ),
+                            );
+                            // Navigator.pushNamed(context, MainScreen.routeName);
+                          }
                         }),
                   ],
                 ),

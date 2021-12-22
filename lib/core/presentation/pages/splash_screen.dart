@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:myfinance/core/presentation/pages/main_screen.dart';
+import 'package:myfinance/core/presentation/widgets/drop_down.dart';
 import 'package:myfinance/features/registration/presentation/pages/infographic_page.dart';
 import 'package:flutter/services.dart';
+import 'package:myfinance/services/hive_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,10 +14,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late final bool _isApplicationInitialized;
   @override
   void initState() {
     // Removes keyboard when splash
     SystemChannels.textInput.invokeMethod('TextInput.hide');
+    _isApplicationInitialized = HiveService()
+        .getBox(boxName: boxes.initializationBox)
+        .get("isInitialized");
     super.initState();
   }
 
@@ -31,7 +38,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget _splashScreenStructre() {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, InfoGraphicScreen.routeName);
+        _isApplicationInitialized
+            ? Navigator.pushNamed(context, MainScreen.routeName)
+            : Navigator.pushNamed(context, InfoGraphicScreen.routeName);
       },
       child: Container(
         height: MediaQuery.of(context).size.height,

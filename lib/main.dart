@@ -4,10 +4,14 @@ import 'package:myfinance/core/presentation/pages/splash_screen.dart';
 import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
 import 'package:myfinance/route/router.dart';
 import 'package:myfinance/services/bloc_observer.dart';
+import 'package:myfinance/services/hive_service.dart';
 
 import 'core/config/app_config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveService().initHive();
+
   BlocOverrides.runZoned(
     () {},
     blocObserver: AppBlocObserver(),
