@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -10,52 +11,75 @@ import 'package:myfinance/features/registration/presentation/bloc/registration/p
 
 import 'profile_bloc_test.mocks.dart';
 
+import 'package:bloc_test/bloc_test.dart';
+
+class MockProfilerBloc extends MockBloc<ProfileEvent, ProfileState>
+    implements ProfileBloc {}
+
 @GenerateMocks([GetProfileInformation, SetProfileInformation])
 void main() {
   late ProfileBloc bloc;
   late MockGetProfileInformation mockGetProfileInformation;
   late MockSetProfileInformation mockSetProfileInformation;
+  late MockProfilerBloc profilerBloc;
   setUp(() {
     mockSetProfileInformation = MockSetProfileInformation();
     mockGetProfileInformation = MockGetProfileInformation();
     bloc = ProfileBloc(
         getProfileInformation: mockGetProfileInformation,
         setProfileInformation: mockSetProfileInformation);
-  });
-
-  test('initialState should be intial', () async {
-    // assert
-    expect(bloc.state, equals(ProfileInitial()));
+    profilerBloc = MockProfilerBloc();
   });
 
   Profile profile = const Profile(name: 'mandip rai');
 
-  test("should return wether it was initialized or not", () async {
-    // arrange
-    when(mockSetProfileInformation.execute(profile))
-        .thenAnswer((realInvocation) async => true);
-    // assert later
-    final expected = [
-      ProfileInitial(),
-      ProfileInitialized(profile: profile),
-    ];
-    expectLater(bloc.state, emitsInOrder(expected));
-    // act
-    bloc.add(SetProfileInformationEvent(profile: profile));
-    // assert
+  void setUpBloc() {
+    whenListen(
+      profilerBloc,
+      Stream.fromIterable(
+          [ProfileInitial(), ProfileInitialized(profile: profile)]),
+      initialState: ProfileInitial(),
+    );
+  }
 
-    verify(mockSetProfileInformation.execute(profile));
+  test('profile state should be [ProfileInitialized] when setProfile called',
+      () async {
+    // arrange
+    setUpBloc();
+    when(mockGetProfileInformation.execute())
+        .thenAnswer((realInvocation) async => profile);
+    // act
+    profilerBloc.add(
+      SetProfileInformationEvent(profile: profile),
+    );
+
+    await expectLater(
+        profilerBloc.stream,
+        emitsInOrder(<ProfileState>[
+          ProfileInitial(),
+          ProfileInitialized(profile: profile)
+        ]));
   });
 
-  test('should return Initialized state when getProfileInformationCalled',
-      () async {
+  test('initialState should be [ProfileInitial]', () async {
+    // arrange
+    setUpBloc();
+    // act
+
+    //assert
+    expect(profilerBloc.state, isA<ProfileInitial>());
+  });
+
+  test('should emit [ProfileInitialzedState]', () async {
     // arrange
     when(mockGetProfileInformation.execute())
         .thenAnswer((realInvocation) async => profile);
     // act
+    expectLater(bloc.stream, emits(ProfileInitialized(profile: profile)));
+
     bloc.add(GetProfileInformationEvent());
+    await untilCalled(mockGetProfileInformation.execute());
     // assert
-    expectLater(bloc.state, ProfileInitialized(profile: profile));
-    verify(mockSetProfileInformation.execute(profile));
+    verify(mockGetProfileInformation.execute());
   });
 }

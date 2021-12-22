@@ -26,10 +26,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileInitialized(profile: profile));
   }
 
-  void _setProfile(
+  _setProfile(
       SetProfileInformationEvent event, Emitter<ProfileState> emit) async {
+    print("booo");
     final bool didProfileSet =
         await setProfileInformation.execute(event.profile);
+    print("booo bee $didProfileSet");
     if (didProfileSet) {
       emit(ProfileInitialized(profile: event.profile));
     } else {
