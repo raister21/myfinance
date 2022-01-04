@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:myfinance/features/registration/data/datasources/profile_datasource_local.dart';
 import 'package:myfinance/features/registration/data/models/profile_model.dart';
 import 'package:myfinance/features/registration/data/repositories/profile_repository_imp.dart';
+import 'package:myfinance/features/registration/domain/entities/profile.dart';
 
 import '../../../fixtures/fixture_reader.dart';
 import '../../domain/usecases/get_profile_information_test.mocks.dart';
@@ -23,17 +24,25 @@ void main() {
         profileDataSourceLocal: mockProfileDataSourceLocal);
   });
 
-  ProfileModel profileModel =
-      ProfileModel.fromJson(json.decode(fixture("profile")));
+  Profile profile = Profile(name: "mandip rai");
 
   test('should get profile from local datasource', () async {
     // arrange
     when(mockProfileDataSourceLocal.getProfileInformation())
-        .thenAnswer((realInvocation) async => profileModel);
+        .thenReturn(profile);
     // act
     final result = await repository.getProfileInformation();
     // assert
-    expect(result, profileModel);
+    expect(result, profile);
     verify(mockProfileDataSourceLocal.getProfileInformation());
+  });
+
+  test('should call initialize application from data source', () async {
+    // arrange
+
+    // act
+    repository.initializeApplication();
+    // assert
+    verify(mockProfileDataSourceLocal.initializeApplication());
   });
 }

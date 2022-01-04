@@ -15,3 +15,8 @@ class SetProfileInformationEvent extends ProfileEvent {
   @override
   List<Object?> get props => [profile];
 }
+
+class InitializeApplicationEvent extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
+}

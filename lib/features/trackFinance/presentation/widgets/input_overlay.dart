@@ -54,7 +54,7 @@ OverlayEntry inputOverlay({
                           InputField(
                             widgetWidth: widgetWidth,
                             header: "From",
-                            changeState: (string) {},
+                            // changeState: (string) {},
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: widgetHeight / 60),
@@ -62,7 +62,6 @@ OverlayEntry inputOverlay({
                           InputField(
                             widgetWidth: widgetWidth,
                             header: "Amount",
-                            changeState: (string) {},
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: widgetHeight / 60),
@@ -142,7 +141,6 @@ OverlayEntry expenditureOverlay({
                           InputField(
                             widgetWidth: widgetWidth,
                             header: "Item",
-                            changeState: (string) {},
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: widgetHeight / 60),
@@ -150,7 +148,6 @@ OverlayEntry expenditureOverlay({
                           InputField(
                             widgetWidth: widgetWidth,
                             header: "From",
-                            changeState: (string) {},
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: widgetHeight / 60),
@@ -158,7 +155,6 @@ OverlayEntry expenditureOverlay({
                           InputField(
                             widgetWidth: widgetWidth,
                             header: "Category",
-                            changeState: (string) {},
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: widgetHeight / 60),
@@ -166,7 +162,6 @@ OverlayEntry expenditureOverlay({
                           InputField(
                             widgetWidth: widgetWidth,
                             header: "Amount",
-                            changeState: (string) {},
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: widgetHeight / 60),

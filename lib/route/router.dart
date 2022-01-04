@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myfinance/core/presentation/bloc/cubit/bottomnavigation_cubit.dart';
 import 'package:myfinance/core/presentation/pages/main_screen.dart';
 import 'package:myfinance/core/presentation/pages/splash_screen.dart';
-import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
+import 'package:myfinance/features/registration/presentation/bloc/registration/profile/bloc/profile_bloc.dart';
+
 import 'package:myfinance/features/registration/presentation/pages/infographic_page.dart';
 import 'package:myfinance/features/registration/presentation/pages/registration_page.dart';
 import 'package:myfinance/features/trackFinance/presentation/bloc/inputCubit/inputoverlay_cubit.dart';
+
+import '../injection.dart';
 
 class RouteGenerator {
   // final RegistrationBlocBloc _registerBloc = RegistrationBlocBloc();
@@ -20,10 +23,11 @@ class RouteGenerator {
           return const InfoGraphicScreen();
         });
 
+      // TODO: SEND BLOC FROM SPLASH
       case (RegistrationScreen.routeName):
         return MaterialPageRoute(builder: (BuildContext context) {
           return BlocProvider(
-            create: (context) => RegistrationBlocBloc(),
+            create: (context) => getIt<ProfileBloc>(),
             child: const RegistrationScreen(),
           );
         });

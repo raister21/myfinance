@@ -6,6 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:myfinance/features/registration/domain/entities/profile.dart';
 import 'package:myfinance/features/registration/domain/usecases/get_profile_information.dart';
+import 'package:myfinance/features/registration/domain/usecases/initialize_application.dart';
 import 'package:myfinance/features/registration/domain/usecases/set_profile_information.dart';
 import 'package:myfinance/features/registration/presentation/bloc/registration/profile/bloc/profile_bloc.dart';
 
@@ -16,18 +17,22 @@ import 'package:bloc_test/bloc_test.dart';
 class MockProfilerBloc extends MockBloc<ProfileEvent, ProfileState>
     implements ProfileBloc {}
 
-@GenerateMocks([GetProfileInformation, SetProfileInformation])
+@GenerateMocks(
+    [GetProfileInformation, SetProfileInformation, InitializeApplication])
 void main() {
   late ProfileBloc bloc;
   late MockGetProfileInformation mockGetProfileInformation;
   late MockSetProfileInformation mockSetProfileInformation;
+  late MockInitializeApplication mockInitializeApplication;
   late MockProfilerBloc profilerBloc;
   setUp(() {
     mockSetProfileInformation = MockSetProfileInformation();
     mockGetProfileInformation = MockGetProfileInformation();
+    mockInitializeApplication = MockInitializeApplication();
     bloc = ProfileBloc(
         getProfileInformation: mockGetProfileInformation,
-        setProfileInformation: mockSetProfileInformation);
+        setProfileInformation: mockSetProfileInformation,
+        initializeApplication: mockInitializeApplication);
     profilerBloc = MockProfilerBloc();
   });
 
@@ -81,5 +86,15 @@ void main() {
     await untilCalled(mockGetProfileInformation.execute());
     // assert
     verify(mockGetProfileInformation.execute());
+  });
+
+  test('should call initialize app event', () async {
+    // arrange
+
+    // act
+    bloc.add(InitializeApplicationEvent());
+    await untilCalled(mockInitializeApplication.execute());
+    // assert
+    verify(mockInitializeApplication.execute());
   });
 }

@@ -39,4 +39,8 @@ class MockProfileRepository extends _i1.Mock implements _i3.ProfileRepository {
       (super.noSuchMethod(
           Invocation.method(#setProfileInformation, [], {#profile: profile}),
           returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
+  @override
+  void initializeApplication() =>
+      super.noSuchMethod(Invocation.method(#initializeApplication, []),
+          returnValueForMissingStub: null);
 }

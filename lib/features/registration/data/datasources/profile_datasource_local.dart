@@ -1,21 +1,38 @@
+import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 import 'package:myfinance/features/registration/domain/entities/profile.dart';
+import 'package:myfinance/services/hive_service.dart';
+
+import '../../../../injection.dart';
 
 abstract class ProfileDataSourceLocal {
-  Future<Profile> getProfileInformation();
-  Future<bool> setProfileInformation({required Profile profile});
+  Profile getProfileInformation();
+  bool setProfileInformation({required Profile profile});
+  void initializeApplication();
 }
 
-class ProfileDataSourceLocalImpl extends ProfileDataSourceLocal{
+@Injectable(as: ProfileDataSourceLocal)
+class ProfileDataSourceLocalImpl extends ProfileDataSourceLocal {
+  final HiveService hiveService;
+
+  ProfileDataSourceLocalImpl({required this.hiveService});
   @override
-  Future<Profile> getProfileInformation() {
-    // TODO: implement getProfileInformation
-    throw UnimplementedError();
+  Profile getProfileInformation() {
+    Box<Profile> profileBox =
+        hiveService.getBox(boxName: boxes.profileBox) as Box<Profile>;
+
+    Profile profile = profileBox.get('profile')!;
+    return profile;
   }
 
   @override
-  Future<bool> setProfileInformation({required Profile profile}) {
-    // TODO: implement setProfileInformation
-    throw UnimplementedError();
+  bool setProfileInformation({required Profile profile}) {
+    return hiveService.saveProfileSetting(
+        boxName: boxes.profileBox, profile: profile);
   }
 
+  @override
+  void initializeApplication() {
+    hiveService.initializeApplication();
+  }
 }

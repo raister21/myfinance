@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:myfinance/core/config/app_config.dart';
-
-import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
+import 'package:myfinance/features/registration/presentation/bloc/registration/profile/bloc/profile_bloc.dart';
 
 class DropDown extends StatefulWidget {
   final List<dynamic> items;

@@ -2,13 +2,13 @@
 // in myfinance/test/features/data/repositories/profile_repossitory_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:myfinance/features/registration/data/datasources/profile_datasource_local.dart'
     as _i3;
 import 'package:myfinance/features/registration/data/repositories/profile_repository_imp.dart'
-    as _i5;
+    as _i4;
 import 'package:myfinance/features/registration/domain/entities/profile.dart'
     as _i2;
 
@@ -36,22 +36,24 @@ class MockProfileDataSourceLocal extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.Profile> getProfileInformation() =>
+  _i2.Profile getProfileInformation() =>
       (super.noSuchMethod(Invocation.method(#getProfileInformation, []),
-              returnValue: Future<_i2.Profile>.value(_FakeProfile_0()))
-          as _i4.Future<_i2.Profile>);
+          returnValue: _FakeProfile_0()) as _i2.Profile);
   @override
-  _i4.Future<bool> setProfileInformation({_i2.Profile? profile}) =>
-      (super.noSuchMethod(
-          Invocation.method(#setProfileInformation, [], {#profile: profile}),
-          returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
+  bool setProfileInformation({_i2.Profile? profile}) => (super.noSuchMethod(
+      Invocation.method(#setProfileInformation, [], {#profile: profile}),
+      returnValue: false) as bool);
+  @override
+  void initializeApplication() =>
+      super.noSuchMethod(Invocation.method(#initializeApplication, []),
+          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [ProfileRepositoryImpl].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockProfileRepositoryImpl extends _i1.Mock
-    implements _i5.ProfileRepositoryImpl {
+    implements _i4.ProfileRepositoryImpl {
   MockProfileRepositoryImpl() {
     _i1.throwOnMissingStub(this);
   }
@@ -62,13 +64,17 @@ class MockProfileRepositoryImpl extends _i1.Mock
               returnValue: _FakeProfileDataSourceLocal_1())
           as _i3.ProfileDataSourceLocal);
   @override
-  _i4.Future<_i2.Profile> getProfileInformation() =>
+  _i5.Future<_i2.Profile> getProfileInformation() =>
       (super.noSuchMethod(Invocation.method(#getProfileInformation, []),
               returnValue: Future<_i2.Profile>.value(_FakeProfile_0()))
-          as _i4.Future<_i2.Profile>);
+          as _i5.Future<_i2.Profile>);
   @override
-  _i4.Future<bool> setProfileInformation({_i2.Profile? profile}) =>
+  _i5.Future<bool> setProfileInformation({_i2.Profile? profile}) =>
       (super.noSuchMethod(
           Invocation.method(#setProfileInformation, [], {#profile: profile}),
-          returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
+  @override
+  void initializeApplication() =>
+      super.noSuchMethod(Invocation.method(#initializeApplication, []),
+          returnValueForMissingStub: null);
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:myfinance/core/presentation/pages/main_screen.dart';
 import 'package:myfinance/core/presentation/widgets/drop_down.dart';
 import 'package:myfinance/features/registration/presentation/pages/infographic_page.dart';
 import 'package:flutter/services.dart';
 import 'package:myfinance/services/hive_service.dart';
+
+import '../../../injection.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,14 +17,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late final bool _isApplicationInitialized;
+  late bool _isApplicationInitialized;
   @override
   void initState() {
     // Removes keyboard when splash
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-    _isApplicationInitialized = HiveService()
-        .getBox(boxName: boxes.initializationBox)
-        .get("isInitialized");
+    // TODO : CHECK STATE USING BLOC
+    _isApplicationInitialized = getIt<HiveService>().isApplicationInitialized();
+
     super.initState();
   }
 

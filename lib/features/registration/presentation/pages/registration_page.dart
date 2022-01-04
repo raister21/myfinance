@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:hive/hive.dart';
 import 'package:myfinance/core/config/app_config.dart';
 import 'package:myfinance/core/presentation/pages/main_screen.dart';
 
@@ -9,12 +12,13 @@ import 'package:myfinance/core/presentation/widgets/input_field.dart';
 
 import 'package:myfinance/core/presentation/widgets/input_field_on_tap.dart';
 import 'package:myfinance/core/utils/date_time_util.dart';
-import 'package:myfinance/features/registration/data/datasources/profile_datasource_local.dart';
-import 'package:myfinance/features/registration/data/repositories/profile_repository_imp.dart';
-import 'package:myfinance/features/registration/domain/usecases/set_profile_information.dart';
-import 'package:myfinance/features/registration/presentation/bloc/registration/registration_bloc_bloc.dart';
+
 import 'package:myfinance/core/presentation/widgets/drop_down.dart';
-import 'package:myfinance/services/bloc_observer.dart';
+import 'package:myfinance/features/registration/domain/entities/profile.dart';
+import 'package:myfinance/features/registration/presentation/bloc/registration/profile/bloc/profile_bloc.dart';
+import 'package:myfinance/services/hive_service.dart';
+
+import '../../../../injection.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const routeName = "/registerScreen";
@@ -27,19 +31,43 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   late final Bloc _bloc;
 
-  // TODO: INPUT VALIDATION
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _initialSaving = TextEditingController();
+  final TextEditingController _monthlyIncome = TextEditingController();
+
+  final GlobalKey<InputFieldState> _nameKey = GlobalKey<InputFieldState>();
+  // GlobalKey<FormFieldState> _initialSavingKey = GlobalKey<FormFieldState>();
+  // GlobalKey<FormFieldState> _monthlyIncomeKey = GlobalKey<FormFieldState>();
+
+  late DateTime _payDay;
+  late AutomaticSavingOption _savingOption = AutomaticSavingOption.never;
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<RegistrationBlocBloc>(context);
+    _bloc = BlocProvider.of<ProfileBloc>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF7E56B3),
-      body: _registrationStructre(),
+    return BlocListener<ProfileBloc, ProfileState>(
+      listener: (context, state) {
+        if (state is ProfileInitialized) {
+          _bloc.add(
+            InitializeApplicationEvent(),
+          );
+
+          int count = 0;
+          Navigator.popUntil(context, (route) {
+            return count++ == 3;
+          });
+          Navigator.pushNamed(context, MainScreen.routeName);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFF7E56B3),
+        body: _registrationStructre(),
+      ),
     );
   }
 
@@ -94,13 +122,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   top: MediaQuery.of(context).size.height / 30),
                             ),
                             InputField(
+                              key: _nameKey,
+                              controller: _nameController,
                               widgetWidth: MediaQuery.of(context).size.width,
                               header: "Name",
-                              changeState: (value) {
-                                _bloc.add(
-                                  ChangeName(name: value),
-                                );
-                              },
+                              requiredField: true,
                             ),
                             Padding(
                               padding: EdgeInsets.only(
@@ -110,17 +136,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               widgetWidth: MediaQuery.of(context).size.width,
                               header: "Initial Saving",
                               keyboardType: TextInputType.number,
-                              changeState: (value) {
-                                try {
-                                  double change = double.parse(value);
-
-                                  _bloc.add(
-                                    ChangeInitialSaving(initialSaving: change),
-                                  );
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
+                              controller: _initialSaving,
                             ),
                             Padding(
                               padding: EdgeInsets.only(
@@ -130,74 +146,43 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               widgetWidth: MediaQuery.of(context).size.width,
                               header: "Monthly Income",
                               keyboardType: TextInputType.number,
-                              changeState: (value) {
-                                try {
-                                  double monthly = double.parse(value);
-
-                                  _bloc.add(
-                                    ChangeMonthlyIncome(monthlyIncome: monthly),
-                                  );
-                                } catch (e) {
-                                  print(e);
-                                }
+                              controller: _monthlyIncome,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height / 60),
+                            ),
+                            DropDown(
+                              header: "Automatic Add Salary",
+                              items: AutomaticSavingOption.values,
+                              widgetWidth: MediaQuery.of(context).size.width,
+                              displayText: _monthlyIncome.text.isEmpty
+                                  ? 'Never'
+                                  : _savingOption.name,
+                              disabled: _monthlyIncome.text.isEmpty,
+                              callBack: (value) {
+                                setState(() {
+                                  _savingOption = value;
+                                });
                               },
                             ),
                             Padding(
                               padding: EdgeInsets.only(
                                   top: MediaQuery.of(context).size.height / 60),
                             ),
-                            BlocBuilder<RegistrationBlocBloc,
-                                RegistrationBlocState>(
-                              builder: (context, state) {
-                                return DropDown(
-                                    header: "Automatic Add Salary",
-                                    items: AutomaticSavingOption.values,
-                                    widgetWidth:
-                                        MediaQuery.of(context).size.width,
-                                    displayText: state.monthlyIncome == null
-                                        ? 'Never'
-                                        : (state.savingOption
-                                                as AutomaticSavingOption)
-                                            .name,
-                                    disabled: state.monthlyIncome == null,
-                                    callBack: (value) {
-                                      if (value.runtimeType ==
-                                          AutomaticSavingOption) {
-                                        _bloc.add(
-                                          ChangeAutomaticSaving(
-                                              savingOption: value),
-                                        );
-                                      }
-                                    });
+                            InputFieldOnTap(
+                              widgetWidth: MediaQuery.of(context).size.width,
+                              header: "Pay day",
+                              onClickEvent: () async {
+                                DateTime pickedDate =
+                                    await DateTimeUtil().pickDate(context);
+                                setState(() {
+                                  _payDay = pickedDate;
+                                });
                               },
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height / 60),
-                            ),
-                            BlocBuilder<RegistrationBlocBloc,
-                                RegistrationBlocState>(
-                              builder: (context, state) {
-                                return InputFieldOnTap(
-                                  widgetWidth:
-                                      MediaQuery.of(context).size.width,
-                                  header: "Pay day",
-                                  onClickEvent: () async {
-                                    if (state.monthlyIncome != null) {
-                                      DateTime pickedDate = await DateTimeUtil()
-                                          .pickDate(context);
-                                      _bloc.add(
-                                        ChangePayDay(salaryDate: pickedDate),
-                                      );
-                                    }
-                                  },
-                                  displayName: state.monthlyIncome == null
-                                      ? 'Not applicable'
-                                      : state.salaryDate != null
-                                          ? state.salaryDate!.day.toString()
-                                          : "Not applicable",
-                                );
-                              },
+                              displayName: _monthlyIncome.text.isEmpty
+                                  ? 'Not applicable'
+                                  : _payDay.day.toString(),
                             ),
                           ],
                         ),
@@ -212,19 +197,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         widgetHeight: MediaQuery.of(context).size.height,
                         buttonName: "Done",
                         onClickEvent: () {
-                          // BLOC state pass to database
-                          if (_bloc.state.name != null) {
+                          bool? valid = _nameKey.currentState?.validate();
+                          if (valid ?? false) {
                             _bloc.add(
-                              SaveRegistration(
-                                state: _bloc.state,
-                                setProfileInformation: SetProfileInformation(
-                                    profileRepository: ProfileRepositoryImpl(
-                                        profileDataSourceLocal:
-                                            ProfileDataSourceLocalImpl())),
+                              SetProfileInformationEvent(
+                                profile: Profile(name: _nameController.text),
                               ),
                             );
-                            // Navigator.pushNamed(context, MainScreen.routeName);
                           }
+                          // _bloc.add(InitializeApplicationEvent());
                         }),
                   ],
                 ),

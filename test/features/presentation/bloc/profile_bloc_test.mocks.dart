@@ -11,6 +11,8 @@ import 'package:myfinance/features/registration/domain/repositories/profile_repo
     as _i2;
 import 'package:myfinance/features/registration/domain/usecases/get_profile_information.dart'
     as _i4;
+import 'package:myfinance/features/registration/domain/usecases/initialize_application.dart'
+    as _i7;
 import 'package:myfinance/features/registration/domain/usecases/set_profile_information.dart'
     as _i6;
 
@@ -65,4 +67,22 @@ class MockSetProfileInformation extends _i1.Mock
   _i5.Future<bool> execute(_i3.Profile? profile) =>
       (super.noSuchMethod(Invocation.method(#execute, [profile]),
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
+}
+
+/// A class which mocks [InitializeApplication].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockInitializeApplication extends _i1.Mock
+    implements _i7.InitializeApplication {
+  MockInitializeApplication() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.ProfileRepository get profileRepository =>
+      (super.noSuchMethod(Invocation.getter(#profileRepository),
+          returnValue: _FakeProfileRepository_0()) as _i2.ProfileRepository);
+  @override
+  void execute() => super.noSuchMethod(Invocation.method(#execute, []),
+      returnValueForMissingStub: null);
 }
